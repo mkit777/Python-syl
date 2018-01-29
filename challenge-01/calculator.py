@@ -18,7 +18,7 @@ if __name__=="__main__":
     elif sde<=9000:
         sl,kc=0.2,555
     elif sde<=35000:
-        sl,kc=0.25,1055
+        sl,kc=0.25,1005
     elif sde<=55000:
         sl,kc=0.3,2755
     elif sde<=80000:
