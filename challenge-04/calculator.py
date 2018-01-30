@@ -12,7 +12,7 @@ class Config(object):
         #创建一个字典，用于存储配置信息
         self.__config={}
         with open(dir) as file:
-            for data in file：
+            for data in file:
                 index, val = data.split('=')
                 self.__config[index.strip()]=float(val.strip())
     #获得基数下线值
