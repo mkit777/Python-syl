@@ -146,31 +146,27 @@ class Args(object):
         return self.__argv[key]
 
 def initUserdata(args,queue):
-    args=args.value
-    print('uerdate:',args)
-    queue.value.put(Userdata(args['d']))
+    queue.put(UserData(args['d']))
 
-def calculate(args,queue):
-    args=args.value
-    print('calculate:',args)
+def calculate(args,queue1,queue2):
     config=Config(args['c'])
     tc=Taxcalculator(config)
-    tc.calculate(queue.get())
-    queue.put(tx)
+    tc.calculate(queue1.get())
+    queue2.put(tc)
+
 def saveret(args,queue):
-    args=args.value
-    print('saveret:',args)
     tx=queue.get()
     tx.saveret(args['o'])
 
     
 if __name__=="__main__":
     args_instance=Args()
-    args=mp.Value('args',args_instance.get())
-    queue=mp.Value('queue',mp.Queue())
-    p1=mp.Process(target=initUserdata,args=(args,queue))
-    p2=mp.Process(target=calculate,args=(args,queue))
-    p3=mp.Process(target=saveret,args=(args,queue))
+    args=args_instance.get()
+    queue1=mp.Queue()
+    queue2=mp.Queue()
+    p1=mp.Process(target=initUserdata,args=(args,queue1))
+    p2=mp.Process(target=calculate,args=(args,queue1,queue2))
+    p3=mp.Process(target=saveret,args=(args,queue2))
     p1.start()
     p2.start()
     p3.start()
