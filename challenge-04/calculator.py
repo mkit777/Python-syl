@@ -42,7 +42,7 @@ class UserData(object):
     def get(self,id=-1,key=None):
         if id <= 0 and key==None:
             return self.__userdata
-        elif id>0 and key == None
+        elif id>0 and key == None:
             return self.__userdata[id]
         elif id>0 and key != None:
             return self.__userdata[id][key]
@@ -65,7 +65,7 @@ class Taxcalculator(object):
         for x in data:
             print('{},{:.0f},{:.2f},{:.2f},{:.2f}'.format(x,data[x]['salary'],data[x]['si'],data[x]['ta'],data[x]['ti']))
     def saveret(self,filename):
-        data=self.__userdata.getdata()
+        data=self.__userdata.get()
         with open(filename,'w') as file:
             for x in data:
                 file.write('{},{:.0f},{:.2f},{:.2f},{:.2f}\n'.format(x,data[x]['salary'],data[x]['si'],data[x]['ta'],data[x]['ti']))
@@ -75,7 +75,7 @@ class Taxcalculator(object):
         salary=self.__userdata.get(id,'salary')
         if salary<self.__config.jishul:
            _salary=self.__config.jishul
-        elif salary<>self.__config.jishuh:
+        elif salary>self.__config.jishuh:
            _salary=self.__config.jishuh
         else:
            _salary=salary
@@ -114,7 +114,7 @@ class Taxcalculator(object):
 
     def __ccl_taxable_income(self,id):
         data= self.__userdata.get(id)
-        taxable_income = data['salary']-data['si']-data['tm']
+        taxable_income = data['salary']-data['si']-data['ta']
         self.__userdata.update(id,ti=taxable_income)
 
 class Args(object):
@@ -122,7 +122,7 @@ class Args(object):
     def __init__(self):
         self.__check()
         self.__argv={}
-        for i,arg in enumerate(sys.argv):
+        for i,arg in enumerate(sys.argv[1:]):
             if i%2==0:
                 key=arg.strip('-')
                 self.__argv[key]=None
@@ -130,29 +130,28 @@ class Args(object):
                 self.__argv[key]=arg
     
     def __check(self):
-        if len(self.args)!=6:
+        if len(sys.argv)!=7:
             print('Parameter Error.')
             sys.exit(-1)
 
         parameters = ('-c','-d','-o')
         for parameter in parameters:
-            if parameter not in self.__args:
+            if parameter not in sys.argv:
                 print('Parameter Error.')
                 sys.exit(-1)
  
-    @property
-    def args(self,key=None):
+    def get(self,key=None):
         if key==None:
             return self.__argv
         return self.__argv[key]
 
 if __name__=="__main__":
     args_instance=Args()
-    args=args_instance.args
+    args=args_instance.get()
     config=Config(args['c'])
     userdata=UserData(args['d'])
 
     tc=Taxcalculator(config)
     tc.calculate(userdata)
     #tc.showret()
-    tc.saveret(args[o])
+    tc.saveret(args['o'])
