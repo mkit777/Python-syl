@@ -90,9 +90,9 @@ class Taxcalculator(object):
     
     def __ccl_tax_amount(self,id): 
         data=self.__userdata.get(id)
-        pre_taxable_income =data['salary']-data['si']-3500
+        pre_taxable_income = data['salary']-data['si']-3500
         #judge taxable income and quick deduction
-        if pre_taxable_income<0:
+        if pre_taxable_income<=0:
             tx,qd=0,0
         elif pre_taxable_income<=1500:  
             tx,qd=0.03,0
@@ -109,7 +109,8 @@ class Taxcalculator(object):
         else:
             tx,qd=0.45,13505
         #calculate tax_amount
-        tax_amount=pre_taxable_income*tx-qd
+        tax_amount = pre_taxable_income*tx-qd
+        tax_amount = tax_amount if tax_amount>0 else 0
         self.__userdata.update(id,ta=tax_amount)
 
     def __ccl_taxable_income(self,id):
@@ -156,6 +157,7 @@ def calculate(args,queue1,queue2):
 
 def saveret(args,queue):
     tx=queue.get()
+    #tx.showret()
     tx.saveret(args['o'])
 
     
