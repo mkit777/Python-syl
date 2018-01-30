@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-
+import multiprocessing as mp
 class Config(object):
 
     def __init__(self,dir):
@@ -145,13 +145,35 @@ class Args(object):
             return self.__argv
         return self.__argv[key]
 
+def initUserdata(args,queue):
+    args=args.value
+    print('uerdate:',args)
+    queue.value.put(Userdata(args['d']))
+
+def calculate(args,queue):
+    args=args.value
+    print('calculate:',args)
+    config=Config(args['c'])
+    tc=Taxcalculator(config)
+    tc.calculate(queue.get())
+    queue.put(tx)
+def saveret(args,queue):
+    args=args.value
+    print('saveret:',args)
+    tx=queue.get()
+    tx.saveret(args['o'])
+
+    
 if __name__=="__main__":
     args_instance=Args()
-    args=args_instance.get()
-    config=Config(args['c'])
-    userdata=UserData(args['d'])
-
-    tc=Taxcalculator(config)
-    tc.calculate(userdata)
-    #tc.showret()
-    tc.saveret(args['o'])
+    args=mp.Value('args',args_instance.get())
+    queue=mp.Value('queue',mp.Queue())
+    p1=mp.Process(target=initUserdata,args=(args,queue))
+    p2=mp.Process(target=calculate,args=(args,queue))
+    p3=mp.Process(target=saveret,args=(args,queue))
+    p1.start()
+    p2.start()
+    p3.start()
+    p1.join()
+    p2.join()
+    p3.join() 
