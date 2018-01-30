@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import sys
 import multiprocessing as mp
+import os
 class Config(object):
 
     def __init__(self,dir):
-        #if not sys.path.exist(dir)
-           # raise FileNotFoundError()
+        if not os.path.exists(dir):
+            raise FileNotFoundError()
         self.__config={}
         with open(dir) as file:
             for data in file:
@@ -30,6 +31,8 @@ class UserData(object):
 
     def __init__(self,dir):
         self.__userdata={}
+        if not os.path.exists(dir):
+            raise FileNotFoundError()
         with open(dir) as file:
             for data in file:
                 id, salary = data.split(',')
@@ -174,4 +177,4 @@ if __name__=="__main__":
     p3.start()
     p1.join()
     p2.join()
-    p3.join() 
+    p3.join()
