@@ -105,7 +105,7 @@ class Taxcalculator(object):
         #count social insurance
         social_insurance=0
         for insurance_ratio in  insurance_ratios:
-            social_insurance += salary * insurance_ratio
+            social_insurance += _salary * insurance_ratio
         self.__userdata.update(id,si=social_insurance)
     #计算应纳税额
     def __ccl_tax_amount(self,id): 
