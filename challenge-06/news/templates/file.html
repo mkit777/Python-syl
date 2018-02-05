@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% macro showartical(artical) %}
+	<h1>{{ artical.title }}</h1>
+	<article>{{ artical.content}}</article>
+	<div sytle="with:1000px;text-align:right;">created time:{{ artical.created_time }}</div>
+{% endmacro %}
+
+{% block title %}
+{{ artical.title }}-MyWebsite
+{% endblock %}
+
+{% block content %}
+{{ showartical(artical) }}
+{% endblock %}
