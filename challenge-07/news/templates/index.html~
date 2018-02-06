@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% macro titlelist(articallist) %}
+	<ul>
+		{% for artical in articallist %}
+		<li><a href="{% url_for('file',filename={{ artical.title }}) %">{{ artical.title }}</a></li>
+		{% endfor %}
+	</ul>
+{% end macro %}
+
+{% block content %}
+	<h1>{% block title %}Welcome to my website {% end block title %}</h1>
+	{% titilelist(artical_list) %}
+{% endblock %}
