@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block head_title %}{{ file.title }} - {% endblock %}
+
+{% block body_content %}
+ <div class="container">
+   
+    <div class="row">
+         <!-- 左侧文章内容 开始-->
+        <div class="col-md-9">
+           <h2>{{ file.title}}</h2>
+           <hr>
+           <p> {{ file.content }} </p>
+           <hr>
+           <p class="text-right"><span>创建时间:{{ file.create_time }}</span></p>
+        </div>
+        <!-- 左侧文章列表栏结束 -->
+
+        <!-- 右侧分栏 -->
+        <div class="col-md-3">
+            <!-- 网站公告开始 -->
+            <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <h3 class="panel-title">网站公告</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat velit aut eum tenetur, placeat maxime ducimus illo minus aliquid! Nesciunt voluptatum eveniet, accusantium facilis similique quod earum beatae nam rerum.
+                        </p>
+                    </div>
+                </div>
+                <!-- 网站公告结束 -->                   
+            <!-- 标签组开始 -->
+            <ul class="list-group">
+            	{% for tag in file.tags %}
+                <li class="list-group-item">
+                    <span class="badge">1</span>
+                    {{ tag }}
+                </li>
+                {% endfor %}
+            </ul>
+            <!-- 标签组结束 -->
+        </div>
+        <!-- 右侧分栏结束 -->
+    </div>
+</div>    
+ {% endblock %}   
