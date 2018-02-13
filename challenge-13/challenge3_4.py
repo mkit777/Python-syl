@@ -20,7 +20,8 @@ def main():
     host_count={}
     url_count={}
     for log in logs:
-        if '11/Jan/2017' in log[1]:
+        time = datetime.strptime(log[1],'%d/%b/%Y:%H:%M:%S %z')
+        if time.year==2017 and time.month == 1 and time.day==11:
             host_count[log[0]] = host_count.get(log[0],0)+1
         if log[3] == '404':
             url_count[log[2]] = url_count.get(log[2],0)+1
@@ -32,7 +33,7 @@ def main():
             break
     for k,v in url_count.items():
         if v==url_max:
-            url_dict = {k,v}
+            url_dict = {k:v}
             break
     return ip_dict,url_dict
 
