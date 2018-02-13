@@ -2,7 +2,7 @@
 #!/usr/bin/env python3
 
 from openpyxl import load_workbook,Workbook
-FILE = 'D:/workspace/python/courses.xlsx'
+FILE = 'courses.xlsx'
 def combine():
     wb = load_workbook(FILE)
     s_stds = wb['students']
@@ -40,16 +40,14 @@ def split():
             wbs[year] = nwb
             sheet = nwb.create_sheet()
             sheet.append(head)
-            nwb.save('D:/'+str(year)+'.xlsx')
+            nwb.save(str(year)+'.xlsx')
             nwb.close()
         wb = wbs.get(year)
         sheet = wb.active
         sheet.append(row)
 
-    print(sheet.values)
     for k,v in wbs.items():
-        print(k,v)
-        v.save('D:/'+str(k)+'.xlsx')
+        v.save(str(k)+'.xlsx')
         v.close()
 
 def get_values(row):
@@ -58,5 +56,5 @@ def get_values(row):
 
 
 if __name__ == '__main__':
-    #combine()
+    combine()
     split()
