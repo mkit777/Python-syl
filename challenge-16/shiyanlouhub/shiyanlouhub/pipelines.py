@@ -16,10 +16,10 @@ class ShiyanlouhubPipeline(object):
         self.session.add(Repositories(**item))
         return item
 
-    def open_spider(self):
+    def open_spider(self, spider):
         Session = sessionmaker(bind=engine)
         self.session = Session()
 
-    def cloase_spider(self):
+    def close_spider(self, spider):
         self.session.commit()
         self.session.close()

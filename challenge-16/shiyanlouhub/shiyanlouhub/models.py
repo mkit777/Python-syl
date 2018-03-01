@@ -1,13 +1,16 @@
-from sqlalchemy import crate_engine
-from sqlalchemy.ext.declaractive import declaractive_base
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Integer,DateTime
 
-Base = declaractive_base()
-engine = crate_engine('mysql://root@localhost:3306/shiyanlou?charset=utf8')
+Base = declarative_base()
+engine = create_engine('mysql://root@localhost:3306/shiyanlougithub?charset=utf8')
 
 
 class Repositories(Base):
     __tablename__ = 'repositories'
-    id = Column(Integer, primary_Key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String(64))
     update_time = Column(DateTime)
+
+if __name__ == '__main__':
+    Base.metadata.create_all(engine)

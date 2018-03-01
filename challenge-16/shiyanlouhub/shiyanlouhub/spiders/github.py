@@ -5,15 +5,14 @@ from shiyanlouhub.items import RepositoriesItem
 
 class GithubSpider(scrapy.Spider):
     name = 'github'
-    allowed_domains = ['https://github.com/']
 
     @property
     def start_urls(self):
-        yield ('https://github.com/shiyanlou?page={}&tab=repositories'.format(i) for i in range(0, 5))
+        return ('https://github.com/shiyanlou?page={}&tab=repositories'.format(i) for i in range(1, 5))
 
     def parse(self, response):
-        for item in response.xpath('//*[@id="user-repositories-list"]//li[@class="source"]'):
+        for item in response.xpath('//*[@id="user-repositories-list"]//li[@itemprop="owns"]'):
             yield RepositoriesItem({
-                'name': item.xpath('.//h3/a/text()').extract_first(),
+                'name': item.xpath('.//h3/a/text()').extract_first().strip(),
                 'update_time': item.xpath('.//relative-time/@datetime').extract_first()
             })
