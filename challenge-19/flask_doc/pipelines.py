@@ -9,7 +9,7 @@ import redis
 
 class FlaskDocPipeline(object):
     def process_item(self, item, spider):
-        item['text']=re.sub('\s+','\n',item['text'])
+        item['text']=re.sub('\s+',' ',item['text'])
         self.r.lpush('flask_doc:items',item)
         return item
 

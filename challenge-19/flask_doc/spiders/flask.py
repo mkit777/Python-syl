@@ -17,5 +17,4 @@ class FlaskSpider(scrapy.spiders.CrawlSpider):
         yield PageItem({
             'url': response.url,
             'text': re.sub(r'<.*?>','',response.xpath('//div[@role="main"]').extract_first())
-
         })
