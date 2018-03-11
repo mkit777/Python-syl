@@ -7,7 +7,6 @@
 
 from scrapy import signals
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware as _UserAgentMiddleware
-from scrapy import log
 import random
 
 class UserAgentMiddleware(_UserAgentMiddleware):
