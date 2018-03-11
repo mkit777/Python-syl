@@ -11,15 +11,12 @@ from scrapy.exceptions import DropItem
 class DoubanMoviePipeline(object):
     count = 0
     def open_spider(self,spider):
-        self.r = redis.StrictRedis(host='localhost',port=6379,decode_responses=True)
+        self.r = redis.StrictRedis(host='127.0.0.1',port=6379,decode_responses=True)
 
 
     def process_item(self, item, spider):
         if eval(item['score']) < 8:
             raise DropItem
-        temp =  item['summary']
-        temp = re.sub(' ','',temp)
-        item['summary']=re.sub(r'\n+',r'\n',temp)
         DoubanMoviePipeline.count+=1
         self.r.lpush('douban_movie:items',item)
         return item
