@@ -6,6 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import redis
 import re
+import json
 from scrapy.exceptions import DropItem
 
 class DoubanMoviePipeline(object):
@@ -18,7 +19,7 @@ class DoubanMoviePipeline(object):
         if eval(item['score']) < 8:
             raise DropItem
         DoubanMoviePipeline.count+=1
-        self.r.lpush('douban_movie:items',item)
+        self.r.lpush('douban_movie:items',json.dumps(dict(item)))
         return item
 
 
