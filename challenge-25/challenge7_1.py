@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 from pandas import Series, DataFrame
+
 def co2():
     data = pd.read_excel("ClimateChange.xlsx", sheetname='Data')
     country = pd.read_excel("ClimateChange.xlsx", sheetname='Country')
