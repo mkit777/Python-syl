@@ -45,11 +45,11 @@ class User(Base, UserMixin):
 
     @property
     def is_admin(self):
-        return self.role == cls.ROLE_ADMIN
+        return self.role == self.ROLE_ADMIN
 
     @property
     def is_staff(self):
-        return self.role == cls.ROLE_STAFF
+        return self.role == self.ROLE_STAFF
     
 
 

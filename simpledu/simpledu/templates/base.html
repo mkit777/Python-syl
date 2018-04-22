@@ -4,7 +4,7 @@
     <title>{% block title %}{% endblock %}</title>
     {% block head_css %}
         <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="static/main.css">
+        <link rel="stylesheet" href="{{url_for('static',filename='main.css')}}">
     {% endblock %}
      
 </head>
@@ -28,7 +28,7 @@
                 <li class="active"><a href="/">课程<span class="sr-only">(current)</span></a></li>
                 <li><a href="#">直播</a></li>
                 {% if current_user.is_authenticated and current_user.is_admin %}
-                <li><a href="#">控制台</a></li>
+                <li><a href="{{ url_for('admin.admin_index') }}  ">控制台</a></li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
