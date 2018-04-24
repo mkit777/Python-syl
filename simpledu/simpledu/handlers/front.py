@@ -20,7 +20,6 @@ def index():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        print(form.username.data.isalnum())
         if not form.username.data.isalnum():
             flash('username not all number',category='danger')
         else:

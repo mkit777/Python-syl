@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Live{% endblock %}
+{% block head_css %}
+{{ super()}}
+<style>
+    #message-box {
+        background-color: #eee;
+        font-size: 15px;
+        padding: 3px 0 0 5px;
+        width: 100%;
+        height: 455px;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        overflow: scroll;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md-9">
+        <video id="videoElement" width="100%" height="500px" controls="controls"></video>     
+    </div>
+    <div class="col-md-3">
+        <div id="message-box">
+
+        </div>
+        <div class="input-group" id="message-form">
+            <input type="text" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">发言</button>
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block tail_js %}
+{{super()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.3.3/flv.min.js"></script>
+<script>
+    if (flvjs.isSupported()){
+        var videoElement = document.getElementById('videoElement');
+        var flvPlayer = flvjs.createPlayer({
+            type:'flv',
+            isLive:false,
+            url:'https://js.live-play.acgvideo.com/live-js/138574/live_1435819_3748715.flv?wsSecret=282301ce20729763a91c9bab42ff4dff&wsTime=1524400788'
+        });
+    flvPlayer.attachMediaElement(videoElement);
+    flvPlayer.load();
+    flvPlayer.play();
+    }
+
+    var inbox = new WebSocket('ws://'+location.host+'/ws/recv');
+    var outbox = new WebSocket('ws://'+location.host+'/ws/send');
+    $('#message-form button').on('click',function(event){
+        text = $('#message-form input').val();
+        username = $('#username').text();
+        outbox.send(JSON.stringify({
+            username:username,
+            text:text
+        }));
+        $('#message-form input').val('');
+    })
+    
+    inbox.onmessage = function(message){
+        console.log(message);
+        var data = JSON.parse(message.data);
+
+        if(data.username!=null){
+            $('#message-box').append('<p><b>'+data.username+'</b>'+':'+data.text+'</p>');
+        }else{
+            $('#message-box').append('<p><b>'+data.text+'</b></p>');
+        }      
+    };
+
+    inbox.onclose = function(){
+        this.inbox = new WebSocket('ws://'+location.host+'/ws/recv');
+    }
+
+    outbox.onclose = function(){
+        this.outbox = new WebSocket('ws://'+location.host+'/ws/send');
+    }
+</script>
+{% endblock %}

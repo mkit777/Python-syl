@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField,TextAreaField,IntegerField
 from wtforms.validators import Length, Email, EqualTo, Required,URL,NumberRange
-from simpledu.models import db, User,Course
+from simpledu.models import db, User,Course,Live
 from wtforms import ValidationError
 import re
+from flask import flash
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[Required('请输入用户名'), Length(3, 24)])
@@ -13,6 +14,9 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('提交')
 
     def validate_username(self, field):
+        if not field.data.isalnum():
+            flash('username not all num','danger')
+            raise ValidationError()
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('用户名已注册。')
 
@@ -96,3 +100,24 @@ class UserForm(FlaskForm):
         db.session.add(user)
         db.session.commit()
         return user
+    
+class LiveForm(FlaskForm):
+    id = IntegerField('ID',validators=[Required()])
+    name = StringField('Live Name',validators=[Required(),Length(3,24)])
+    liver_name = StringField('Liver',validators=[Required()])
+    sumbit = SubmitField('提交')
+
+    def validate_liver_name(self,field):
+        if not User.query.filter_by(username=field.data).first():
+            raise ValidationError('用户不存在')
+
+    def create_live(self):
+        live = Live()
+        self.populate_obj(live)
+        live.liver_id= User.query.filter_by(username=self.liver_name.data).first().id
+        db.session.add(live)
+        db.session.commit()
+        return live
+class MessageForm(FlaskForm):
+    text = TextAreaField('', validators=[Required()])
+    submit = SubmitField('发送')

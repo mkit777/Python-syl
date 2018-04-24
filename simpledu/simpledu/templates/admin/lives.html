@@ -1,0 +1,36 @@
+{% extends 'admin/index.html' %}
+{% block operation %}
+<a href="{{url_for('admin.create_live')}}" type='button' class='btn btn-primary'>
+    <span class='glyphicon glyphicon-plus' aria-hidden="true"></span>Add Live
+</a>
+{% endblock %}  
+{% block admin %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>live name</th>
+            <th>liver</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for live in pagination.items %}
+        <tr>
+            <td>{{ live.id}}</td>
+            <td>{{ live.name}}</td>
+            <td>{{ live.liver.username }}</td>
+            <td>
+                <div class='btn-group' role='group'>
+                    <a href="{{url_for('admin.edit_live',live_id=live.id)}}" type='button' class='btn btn-default' title='编辑'>
+                        <span class='glyphicon glyphicon-pencil' title='编辑' aria-hidden="true"></span>
+                    </a>
+                    <a href="{{url_for('admin.delete_live',live_id=live.id)}}" type='button' class='btn btn-default' title='删除'>
+                        <span class="glyphicon glyphicon-trash" title='删除' aria-hidden="true"></span>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock%}

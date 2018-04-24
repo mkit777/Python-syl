@@ -86,3 +86,9 @@ class Chapter(Base):
     @property
     def url(self):
         return url_for('course.chapter',course_id=self.course_id,chapter_id=self.id)
+
+class Live(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    name = db.Column(db.String(256))
+    liver_id = db.Column(db.Integer, db.ForeignKey('user.id',ondelete='CASCADE'))
+    liver = db.relationship('User',uselist=False)
